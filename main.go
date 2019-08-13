@@ -8,7 +8,7 @@ import (
 	"log"
 	"net/http"
 	"encoding/json"
-
+	"strconv"
 )
 
 // init is invoked before main()
@@ -21,14 +21,20 @@ import (
 */
 
 func main() {
+	// declare vars
 	data := map[string]interface{}{}
 	a := []string{}
+	floats := []float64{}
 
-	limit := 4    //should be an env var
+	//should be an env var
+	limit := 3
 	count := 0
+	var avg float64 = 0
+
 	// should be change to env var values
 	url := "https://www.alphavantage.co/query?apikey=C227WD9W3LUVKVV9&function=TIME_SERIES_DAILY_ADJUSTED&symbol=MSFT"
 
+	// get response from the url GET request
 	resp, err := http.Get(url)
 	if err != nil {
 		log.Fatalln(err)
@@ -51,15 +57,27 @@ func main() {
 				//	fmt.Println("key: ", i , "value: ", item)
 					for ix, items := range  item.(map[string]interface{}) {
 						if ix == "4. close" {
-							fmt.Println("-------************************-----------")
-							fmt.Println("Id: ", count+1, "Key: ", ix , "Value: ", items)
+						//	fmt.Println("-------************************-----------")
+						//	fmt.Println("Id: ", count+1, "Key: ", ix , "Value: ", items)
 							a = append(a, items.(string))
 							count ++
 						}
 						if (limit == count) {
+							for o, b := range a {
+								var tmp, tmp2 = strconv.ParseFloat(b, o)
+								tmp2 = tmp2
+								floats = append(floats, tmp)
+
+								// Calculate the average
+								avg = (avg + tmp)
+							}
+							// cast limit to float and divide into the limit
+							limit := float64(limit)
+							avg = (avg/limit)
+
 							fmt.Println("//////////////////////////////////////////")
-							fmt.Println("Results: ====>>", a)
-							fmt.Println("Average: ====>>")
+							fmt.Println("Results: ====>>", floats)
+							fmt.Println("Average: ====>>", avg)
 							fmt.Println("//////////////////////////////////////////")
 							os.Exit(0)
 						}

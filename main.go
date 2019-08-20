@@ -52,6 +52,7 @@ func main() {
 	}else{
 		for k, value := range data {
 		/*	fmt.Println("Key:", k, "Value:", value, "\n")*/
+
 		if k == "Time Series (Daily)" {
 				for _, item := range value.(map[string]interface{}) {
 				//	fmt.Println("key: ", i , "value: ", item)

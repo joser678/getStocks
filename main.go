@@ -67,7 +67,6 @@ func main() {
 								var tmp, tmp2 = strconv.ParseFloat(b, o)
 								tmp2 = tmp2
 								floats = append(floats, tmp)
-
 								// Calculate the average
 								avg = (avg + tmp)
 							}
